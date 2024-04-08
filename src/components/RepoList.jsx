@@ -7,7 +7,7 @@ export default function RepoList({ userData }) {
   useEffect(() => {
     if (userData?.repos_url) {
       axios
-        .get(`${userData.repos_url}`)
+        .get(`${userData?.repos_url}`)
         .then((response) => {
           getUserRepos(response.data);
         })
@@ -22,11 +22,11 @@ export default function RepoList({ userData }) {
   );
 
   return (
-    <div className="flex flex-wrap justify-between gap-4">
+    <div className="flex flex-wrap justify-center gap-4 w-full">
       {filteredRepo.length > 0 ? (
         filteredRepo.map((userRepo) => (
           <div
-            className="border border-gray-600 rounded-md p-4"
+            className="md:w-[calc(50%-0.5rem)] w-full border border-gray-600 rounded-md p-4"
             key={userRepo.id}
           >
             <div className="flex flex-row items-center justify-between">
@@ -42,7 +42,11 @@ export default function RepoList({ userData }) {
                 >
                   <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path>
                 </svg>
-                <p>{userRepo.name}</p>
+                <a href={userRepo.clone_url} target="_blank" rel="noreferrer">
+                  <span className="text-blue-700 font-semibold">
+                    {userRepo.name}
+                  </span>
+                </a>
               </div>
               <span className="text-xs text-black capitalize px-1 py-0.5 border border-solid border-gray-800 rounded-2xl leading-4">
                 {userRepo.visibility}
@@ -83,7 +87,7 @@ export default function RepoList({ userData }) {
           </div>
         ))
       ) : (
-        <p>Repo is not exist</p>
+        <p>No repository exists where the star or fork count is more than 0.</p>
       )}
     </div>
   );

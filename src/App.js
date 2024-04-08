@@ -6,20 +6,17 @@ import UserLayout from "./components/UserLayout";
 function App() {
   const [user, getUsers] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+  const [error, setError] = useState(false);
 
   useEffect(()=> {
     if(searchInput) {
-      console.log('searchInput: ', typeof searchInput);
-      console.log('searchInput: ', searchInput);
-      
       axios.get(`https://api.github.com/users/${searchInput}`)
       .then(response => {
         getUsers(response.data);
-        console.log('response.data: ', response.data);
-        console.log('Api call');
+        setError(false);
       })
       .catch(error => {
-        //console.error(error);
+        setError(true)
       })
     }
   }, [searchInput])
@@ -37,7 +34,7 @@ function App() {
                 <h2 className="text-4xl font-extrabold dark:text-white text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Github User Search</h2>
                 <p>An advanced online playground for Tailwind CSS, including support for things like:</p>
                 <Search onSearch = {handleSearch} />
-                {searchInput !== '' ? <UserLayout userData = {user} /> : <h3 className="text-lg font-normal text-gray-950 lg:text-xl dark:text-gray-400">Enter Value to search github profile and more info related to profile</h3>}
+                {searchInput !== '' && error !== true ? <UserLayout userData = {user} /> : error === true ? <h1 className="text-red-600 text-center">No username found on GitHub.</h1> : <h3 className="text-lg font-normal text-gray-950 lg:text-xl dark:text-gray-400">Enter Value to search github profile and more info related to profile</h3>}
               </div>
             </div>
           </div> 
