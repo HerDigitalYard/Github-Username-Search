@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Github-User-Search/static/css/main.757dc768.css",
+    "main.js": "/Github-User-Search/static/js/main.5b5647f6.js",
+    "static/js/787.deb482a2.chunk.js": "/Github-User-Search/static/js/787.deb482a2.chunk.js",
+    "index.html": "/Github-User-Search/index.html",
+    "main.757dc768.css.map": "/Github-User-Search/static/css/main.757dc768.css.map",
+    "main.5b5647f6.js.map": "/Github-User-Search/static/js/main.5b5647f6.js.map",
+    "787.deb482a2.chunk.js.map": "/Github-User-Search/static/js/787.deb482a2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.757dc768.css",
+    "static/js/main.5b5647f6.js"
+  ]
+}
