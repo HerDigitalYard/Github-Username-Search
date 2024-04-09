@@ -1,8 +1,6 @@
 # Github User Finder
 
-Github User Search is web search application for Github username, where user can search for github username -> if username found then it'll give user's image, username, bio description, and github-linkedin link otherwise error message will show.
-
-Moreover, it'll give list of repo where star count or folk count is more than 0.
+**Github Username Search** is web search application for users to Search for GitHub usernames and get the different information like User's image, username, bio description, and github-linkedin link with Account's famous repository which will have more than 0 star count or folk count.
 
 ## Technical Stack
 
