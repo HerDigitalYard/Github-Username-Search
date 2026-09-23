@@ -1,14 +1,17 @@
 import React from "react";
+import { safeWebUrl } from "../github";
 import RepoList from "./RepoList";
 
 export default function UserLayout({ userData }) {
+  const blogUrl = safeWebUrl(userData.blog);
+  const profileUrl = safeWebUrl(userData.html_url);
   return (
     <>
       <div className="">
         <div className="flex flex-col items-center pb-10 gap-4">
           <img
             className="w-24 h-24 rounded-full shadow-lg"
-            src={userData.avatar_url}
+            src={safeWebUrl(userData.avatar_url) || undefined}
             alt={userData.login}
           />
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
@@ -18,11 +21,12 @@ export default function UserLayout({ userData }) {
             {userData.bio}
           </span>
           <div>
-            {userData.blog ? (
+            {blogUrl ? (
               <a
-                href={userData.blog}
+                href={blogUrl}
+                aria-label="Personal website"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="inline-flex items-center font-medium text-blue-600 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700"
               >
                 <svg
@@ -137,11 +141,12 @@ export default function UserLayout({ userData }) {
             ) : (
               ""
             )}
-            {userData.html_url ? (
+            {profileUrl ? (
               <a
-                href={userData.html_url}
+                href={profileUrl}
+                aria-label="GitHub profile"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="inline-flex items-center font-medium text-blue-600 hover:text-blue-800 dark:text-blue-500 dark:hover:text-blue-700"
               >
                 <svg

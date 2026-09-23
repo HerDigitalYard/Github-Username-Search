@@ -1,27 +1,41 @@
-# Github Username Search
+# GitHub Username Search
 
-**Github Username Search** is web search application for users to Search for GitHub usernames and get the different information like User's image, username, bio description, and github-linkedin link with Account's famous repository which will have more than 0 star count or folk count.
+Search GitHub profiles and public repositories with at least one star or fork.
+Built with React, Vite, and Tailwind CSS; hosted on GitHub Pages.
 
-## Preview :
+## Development
 
-<img width="967" alt="Screenshot 2024-04-09 at 9 18 41 pm" src="https://github.com/HerDigitalYard/Github-Username-Search/assets/60232135/d07bee92-8163-4da6-a8f5-8438a415a52b">
+Use Node.js 24 LTS (`nvm use`) and npm.
 
+```sh
+npm ci
+npm start
+```
 
-## Technical Stack :
+Open the local URL printed by Vite. Searches use GitHub's public API without a token.
+GitHub's unauthenticated rate limits apply; the app displays an error when the limit is reached.
 
-- ReactJS (useEffect, useState, Axios, props)
-- Tailwind CSS
-- Hosting : Github pages
+## Validation
 
-## Installation :
+```sh
+npm run check
+npm audit --audit-level=low
+```
 
-- Clone this repo into your VSCode or Any editor you like.
-- Check node is install properly via `node --v` and check npm version via `npm --v`
-- Open your terminal in your editor and run `node i` command to install node_module based on package.json depandencies
-- Finally, Run the project via `npm start`
+`check` runs ESLint, Vitest regression tests, and the production build. CI runs the
+same checks on pushes, pull requests, and weekly. Dependabot checks npm dependencies
+and GitHub Actions weekly.
 
-## License :
+## Deployment
 
-MIT
+```sh
+npm run deploy
+```
 
-**✨Happy Coding✨**
+This builds into `build/` and publishes it to the `gh-pages` branch using your Git
+credentials. Configure GitHub Pages to serve that branch. The Vite base path is
+`/Github-Username-Search/`; update `vite.config.js` if the repository name changes.
+Use `npm run preview` to check the production build locally.
+
+The build and test tooling replaces the old Create React App dependency tree.
+Runtime requests use browser `fetch`; no API secrets belong in this client app.

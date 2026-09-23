@@ -1,21 +1,36 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { githubRequest, safeWebUrl } from "../github";
 
 export default function RepoList({ userData }) {
   const [userRepos, getUserRepos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const username = userData.login;
   useEffect(() => {
-    if (userData?.repos_url) {
-      axios
-        .get(`${userData?.repos_url}`)
-        .then((response) => {
-          getUserRepos(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    const controller = new AbortController();
+    async function load() {
+      try {
+        const repos = [];
+        for (let page = 1; ; page += 1) {
+          const batch = await githubRequest(`/users/${encodeURIComponent(username)}/repos?per_page=100&page=${page}`, controller.signal);
+          if (controller.signal.aborted) return;
+          repos.push(...batch);
+          if (batch.length < 100) break;
+        }
+        getUserRepos(repos);
+      } catch (error) {
+        if (!controller.signal.aborted) setError(error.message || 'Unable to load repositories.');
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
     }
-  }, [userData]);
+    load();
+    return () => controller.abort();
+  }, [username]);
+
+  if (loading) return <p role="status">Loading repositories…</p>;
+  if (error) return <p role="alert">{error}</p>;
 
   const filteredRepo = userRepos.filter(
     (userRepo) => userRepo.stargazers_count > 0 || userRepo.forks_count > 0
@@ -42,7 +57,7 @@ export default function RepoList({ userData }) {
                 >
                   <path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path>
                 </svg>
-                <a href={userRepo.clone_url} target="_blank" rel="noreferrer">
+                <a href={safeWebUrl(userRepo.html_url) || undefined} target="_blank" rel="noopener noreferrer">
                   <span className="text-blue-700 font-semibold">
                     {userRepo.name}
                   </span>
